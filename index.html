@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>ВентФасад Проект — Экраны</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1F2A37;
+    --ink-2: #243447;
+    --blue-deep: #2E6A8F;
+    --blue-mid: #6FA8C9;
+    --bg: #F7FAFC;
+    --rule: #E8F0F6;
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); font-family: 'Onest', sans-serif; color: var(--ink); }
+
+  .header {
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .header img { width: 36px; height: 36px; object-fit: contain; }
+  .header-text { display: flex; flex-direction: column; gap: 2px; }
+  .header-title { font-weight: 800; font-size: 18px; letter-spacing: -0.01em; }
+  .header-sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-mid); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 40px 48px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 16px 40px -16px rgba(15,50,75,0.22);
+    transform: translateY(-2px);
+    border-color: var(--blue-mid);
+  }
+
+  .card-preview {
+    width: 100%;
+    height: 220px;
+    background: #E3EEF7;
+    overflow: hidden;
+    position: relative;
+  }
+  .card-preview iframe {
+    width: 1440px;
+    height: 900px;
+    border: none;
+    transform-origin: top left;
+    transform: scale(calc(100% / 1440));
+    pointer-events: none;
+  }
+
+  .card-info {
+    padding: 18px 20px 20px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--blue-mid);
+    text-transform: uppercase;
+  }
+  .card-title {
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+  .card-arrow {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--blue-deep);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  .card-arrow svg { width: 13px; height: 13px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="assets/logo.png" alt="" />
+  <div class="header-text">
+    <span class="header-title">ВентФасад Проект</span>
+    <span class="header-sub">Все экраны лендинга</span>
+  </div>
+</div>
+
+<div class="grid">
+
+  <a class="card" href="Hero.html" target="_blank">
+    <div class="card-preview">
+      <iframe src="Hero.html" loading="lazy" title="Hero" scrolling="no"></iframe>
+    </div>
+    <div class="card-info">
+      <div class="card-label">
+        <span class="card-num">{ 01 } Главный экран</span>
+        <span class="card-title">Hero</span>
+      </div>
+      <span class="card-arrow">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card" href="Cases.html" target="_blank">
+    <div class="card-preview">
+      <iframe src="Cases.html" loading="lazy" title="Cases" scrolling="no"></iframe>
+    </div>
+    <div class="card-info">
+      <div class="card-label">
+        <span class="card-num">{ 02 } Реализованные объекты</span>
+        <span class="card-title">Кейсы</span>
+      </div>
+      <span class="card-arrow">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card" href="Approach.html" target="_blank">
+    <div class="card-preview">
+      <iframe src="Approach.html" loading="lazy" title="Approach" scrolling="no"></iframe>
+    </div>
+    <div class="card-info">
+      <div class="card-label">
+        <span class="card-num">{ 03 } Почему доверяют</span>
+        <span class="card-title">Подход</span>
+      </div>
+      <span class="card-arrow">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card" href="Audit.html" target="_blank">
+    <div class="card-preview">
+      <iframe src="Audit.html" loading="lazy" title="Audit" scrolling="no"></iframe>
+    </div>
+    <div class="card-info">
+      <div class="card-label">
+        <span class="card-num">{ 04 } Главный конвертер</span>
+        <span class="card-title">Аудит фасада</span>
+      </div>
+      <span class="card-arrow">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card" href="FAQ.html" target="_blank">
+    <div class="card-preview">
+      <iframe src="FAQ.html" loading="lazy" title="FAQ" scrolling="no"></iframe>
+    </div>
+    <div class="card-info">
+      <div class="card-label">
+        <span class="card-num">{ 05 } Частые вопросы</span>
+        <span class="card-title">FAQ</span>
+      </div>
+      <span class="card-arrow">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <a class="card" href="Footer.html" target="_blank">
+    <div class="card-preview">
+      <iframe src="Footer.html" loading="lazy" title="Footer" scrolling="no"></iframe>
+    </div>
+    <div class="card-info">
+      <div class="card-label">
+        <span class="card-num">{ 06 } Подвал</span>
+        <span class="card-title">Footer</span>
+      </div>
+      <span class="card-arrow">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      </span>
+    </div>
+  </a>
+
+</div>
+
+<script>
+  // Scale iframes to fit preview card
+  function scaleIframes() {
+    document.querySelectorAll('.card-preview').forEach(wrap => {
+      const w = wrap.offsetWidth;
+      const h = wrap.offsetHeight;
+      const iframe = wrap.querySelector('iframe');
+      if (!iframe) return;
+      const scaleX = w / 1440;
+      const scaleY = h / 900;
+      const scale = Math.min(scaleX, scaleY);
+      iframe.style.transform = `scale(${scale})`;
+      iframe.style.width = '1440px';
+      iframe.style.height = '900px';
+    });
+  }
+  scaleIframes();
+  window.addEventListener('resize', scaleIframes);
+</script>
+
+</body>
+</html>

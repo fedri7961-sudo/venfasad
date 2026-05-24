@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>ВентФасад Проект — Footer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-deep: #16344A;
+    --bg-deep-2: #0F263A;
+    --bg-deep-3: #1E4565;
+    --blue-mid: #6FA8C9;
+    --blue-deep: #2E6A8F;
+    --blue-light: #B6D4E6;
+    --blue-light-2: #DCEAF5;
+    --ink: #1F2A37;
+    --muted-on-dark: rgba(255,255,255,0.55);
+    --rule-on-dark: rgba(255,255,255,0.10);
+    --rule-on-dark-2: rgba(255,255,255,0.18);
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Onest', system-ui, sans-serif;
+    color: #fff;
+    background: #0E1620;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .stage-wrap { position: fixed; inset: 0; background: #0E1620; overflow: hidden; }
+  .stage-fit {
+    position: absolute; top: 50%; left: 50%;
+    width: 1440px; height: 900px;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+  }
+  .stage {
+    width: 1440px; height: 900px;
+    background: var(--bg-deep);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .grid-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: calc((1440px - 96px) / 12) 100%;
+    background-position: 48px 0;
+    z-index: 1;
+  }
+
+  /* Decorative big circles in the background */
+  .deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.05);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .deco-circle.c1 { width: 720px; height: 720px; top: 50%; right: -240px; transform: translateY(-50%); }
+  .deco-circle.c2 { width: 520px; height: 520px; top: 50%; right: -140px; transform: translateY(-50%); border-color: rgba(255,255,255,0.07); }
+  .deco-circle.c3 { width: 320px; height: 320px; top: 50%; right: -40px; transform: translateY(-50%); border-color: rgba(255,255,255,0.10); }
+
+  .corner-brace {
+    position: absolute; color: var(--blue-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px; z-index: 3;
+    opacity: 0.45;
+  }
+
+  /* ======== LAYOUT ======== */
+  .footer-grid {
+    position: absolute;
+    inset: 56px 48px 0 48px;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto auto;
+    gap: 32px;
+  }
+
+  /* TOP: marker + cta line */
+  .top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .marker-row {
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.04em;
+    color: var(--muted-on-dark);
+  }
+  .marker-row .brace { color: var(--blue-light); }
+  .marker-row .num { color: #fff; font-weight: 600; }
+  .marker-row .sep { width: 80px; height: 1px; background: var(--rule-on-dark); }
+
+  .top-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 22px 14px 28px;
+    background: #fff;
+    color: var(--bg-deep);
+    text-decoration: none;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    transition: background 0.2s;
+  }
+  .top-cta:hover { background: var(--blue-light-2); }
+  .top-cta .ic {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--bg-deep);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .top-cta .ic svg { width: 12px; height: 12px; }
+
+  /* HERO LOGO WORDMARK */
+  .wordmark-block {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: relative;
+  }
+  .wordmark {
+    font-family: 'Onest', sans-serif;
+    font-weight: 900;
+    font-size: 188px;
+    line-height: 0.84;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0;
+    white-space: nowrap;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    min-width: 0;
+  }
+  .wordmark .wm-logo {
+    width: 76px; height: 76px;
+    object-fit: contain;
+    margin-top: 12px;
+    filter: brightness(1.15) drop-shadow(0 8px 24px rgba(0,0,0,0.25));
+    flex: 0 0 auto;
+  }
+  .wordmark .accent {
+    background: linear-gradient(135deg, #B6D4E6 0%, #6FA8C9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .wm-foot {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    border-top: 1px solid var(--rule-on-dark);
+    padding-top: 18px;
+  }
+  .wm-tagline {
+    font-family: 'Onest', sans-serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.78);
+    max-width: 540px;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .wm-tagline strong { color: #fff; font-weight: 700; }
+  .wm-foot-meta {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-on-dark);
+  }
+  .wm-foot-meta .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--rule-on-dark-2);
+    border-radius: 999px;
+  }
+  .wm-foot-meta .badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #5CB85C;
+    box-shadow: 0 0 0 3px rgba(92,184,92,0.18);
+  }
+
+  /* COLUMNS ROW */
+  .columns {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    padding-top: 8px;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    font-weight: 600;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule-on-dark);
+  }
+  .col a, .col .item {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 1.4;
+    transition: color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .col a:hover { color: var(--blue-light); }
+  .col .item .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-on-dark);
+  }
+  .col .strong-line {
+    font-family: 'Onest', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: #fff;
+  }
+
+  /* socials */
+  .socials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--rule-on-dark);
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .social-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: var(--blue-light);
+  }
+  .social-btn .si {
+    width: 22px; height: 22px;
+    color: var(--blue-light);
+    flex: 0 0 auto;
+  }
+
+  /* partner block */
+  .partner {
+    padding: 16px 16px 18px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--rule-on-dark);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .partner .p-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    font-weight: 600;
+  }
+  .partner .p-name {
+    font-family: 'Onest', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.005em;
+  }
+  .partner .p-row {
+    font-size: 13px;
+    color: rgba(255,255,255,0.78);
+  }
+  .partner .p-row a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  .partner .p-row a:hover { color: var(--blue-light); }
+
+  /* LEGAL ROW */
+  .legal {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: center;
+    padding: 18px 0 22px 0;
+    border-top: 1px solid var(--rule-on-dark);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--muted-on-dark);
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+  .legal .reqs span { margin-right: 16px; white-space: nowrap; }
+  .legal a {
+    color: var(--blue-light);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(182,212,230,0.3);
+    padding-bottom: 1px;
+  }
+  .legal a:hover { color: #fff; border-bottom-color: #fff; }
+  .legal .sro {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--rule-on-dark);
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .legal .sro::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--blue-light);
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage-wrap">
+ <div class="stage-fit" id="stageFit">
+  <div class="stage" data-screen-label="06 Footer">
+
+    <div class="grid-bg"></div>
+    <div class="deco-circle c1"></div>
+    <div class="deco-circle c2"></div>
+    <div class="deco-circle c3"></div>
+
+    <span class="corner-brace" style="left:24px; top:24px;">
+</span>
+    <span class="corner-brace" style="right:24px; bottom:24px;">}</span>
+
+    <div class="footer-grid">
+
+      <!-- TOP ROW -->
+      <div class="top-row">
+        <div class="marker-row">
+          <span class="brace">{</span>
+          <span class="num">06</span>
+          <span class="brace">}</span>
+          <span class="sep"></span>
+        </div>
+        <a class="top-cta" href="#audit">
+          Получить расчёт проекта
+          <span class="ic">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- BIG WORDMARK -->
+      <div class="wordmark-block">
+        <h2 class="wordmark">
+          <img src="assets/logo.png" class="wm-logo" alt="" />
+          <span>Вент<span class="accent">Фасад</span></span>
+        </h2>
+
+        <div class="wm-foot">
+          <p class="wm-tagline">
+            Цифровое проектное бюро <strong>«ВентФасад Проект»</strong> — проектирование фасадного контура (НВФ и&nbsp;СПК) <strong>без срыва сроков</strong>.
+          </p>
+          <div class="wm-foot-meta">
+            <span class="badge"><span class="dot"></span>Принимаем проекты</span>
+            <span>с 2019 · Москва · СНГ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNS ROW -->
+      <div class="columns">
+
+        <!-- CONTACTS -->
+        <div class="col">
+          <div class="col-title">\\ Контакты для связи</div>
+
+          <div class="item">
+            <a href="tel:+79213417635" class="strong-line">8 (921) 341-76-35</a>
+            <span class="sub">Связаться с менеджером</span>
+          </div>
+
+          <div class="item">
+            <a href="mailto:ventfasad-proekt@mail.ru" class="strong-line">ventfasad-proekt@mail.ru</a>
+            <span class="sub">Отвечаем и выдаём КП за 24 часа</span>
+          </div>
+
+          <div class="item">
+            <span class="strong-line" style="font-size:15px; font-weight:600">Москва, 1-го Ямского Поля 1, к1</span>
+            <span class="sub">Метро «Белорусская»</span>
+          </div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="col">
+          <div class="col-title">\\ Навигация</div>
+          <a href="#cases">Наши кейсы</a>
+          <a href="#approach">Подход и контроль качества</a>
+          <a href="#audit">Получить расчёт проекта</a>
+          <a href="#faq">Частые вопросы</a>
+          <a href="#contacts">Контакты</a>
+        </div>
+
+        <!-- SOCIALS -->
+        <div class="col">
+          <div class="col-title">\\ Соцсети и ресурсы</div>
+          <div class="socials">
+            <a class="social-btn" href="https://t.me/+xqLjZTRwC1pjYjky" target="_blank" rel="noopener">
+              <svg class="si" viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="10" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M5.5 11l11-4-2 9-3-2-2.5 2v-3l5-4-6 3.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+              </svg>
+              Telegram
+            </a>
+            <a class="social-btn" href="https://vk.com/ventfasad_proekt" target="_blank" rel="noopener">
+              <svg class="si" viewBox="0 0 22 22" fill="none">
+                <rect x="2" y="2" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M6 8c.5 3 2 5 4 5v-2l3 2c1-1 1.5-2 2-3l-1.5-1.5L15 7" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              </svg>
+              VK
+            </a>
+            <a class="social-btn" href="https://www.youtube.com/@UGOL_ARHITEKTORA" target="_blank" rel="noopener">
+              <svg class="si" viewBox="0 0 22 22" fill="none">
+                <rect x="2" y="5" width="18" height="12" rx="3" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M9 8.5l5 2.5-5 2.5V8.5z" fill="currentColor"/>
+              </svg>
+              YouTube
+            </a>
+            <a class="social-btn" href="https://www.instagram.com/ventfasad_proekt" target="_blank" rel="noopener">
+              <svg class="si" viewBox="0 0 22 22" fill="none">
+                <rect x="3" y="3" width="16" height="16" rx="4" stroke="currentColor" stroke-width="1.4"/>
+                <circle cx="11" cy="11" r="3.5" stroke="currentColor" stroke-width="1.4"/>
+                <circle cx="15.5" cy="6.5" r="1" fill="currentColor"/>
+              </svg>
+              Instagram
+            </a>
+          </div>
+        </div>
+
+        <!-- PARTNER -->
+        <div class="col">
+          <div class="col-title">\\ Партнёр</div>
+          <div class="partner">
+            <span class="p-kicker">Объединение / партнёр</span>
+            <span class="p-name">ООО «ПСГ-Проект»</span>
+            <span class="p-row"><a href="tel:+74951084115">+7 (495) 108-41-15</a></span>
+            <span class="p-row"><a href="mailto:info@projectcitygroup.ru">info@projectcitygroup.ru</a></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- LEGAL -->
+      <div class="legal">
+        <div>
+          2026 © ООО «ПСГ-Проект» · г. Москва, 3-я ул. Ямского поля 2 к13, оф. 603
+          <div class="reqs" style="margin-top:8px">
+            <span>ИНН 7716844671</span>
+            <span>КПП 771401001</span>
+            <span>ОГРН 1177746012730</span>
+            <span><a href="#privacy">Политика конфиденциальности</a></span>
+          </div>
+        </div>
+        <span class="sro">СРО «МежРегионПроект» · СРО-П-161-09092010</span>
+      </div>
+
+    </div>
+
+  </div>
+ </div>
+</div>
+
+<script>
+  function fit() {
+    const fit = document.getElementById('stageFit');
+    const aw = window.innerWidth;
+    const ah = window.innerHeight;
+    const scale = Math.min(aw / 1440, ah / 900);
+    fit.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+</script>
+</body>
+</html>

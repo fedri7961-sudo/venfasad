@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>ВентФасад Проект — Кейсы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="image-slot.js"></script>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg-soft: #F7FAFC;
+    --bg-blue-1: #E3EEF7;
+    --bg-blue-2: #DCEAF5;
+    --blue-mid: #6FA8C9;
+    --blue-mid-2: #7BB0CF;
+    --blue-deep: #2E6A8F;
+    --blue-deep-2: #1F5A7A;
+    --ink: #1F2A37;
+    --ink-2: #243447;
+    --muted: #6B7785;
+    --rule: #E8F0F6;
+    --rule-2: #D9E6EF;
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Onest', system-ui, sans-serif;
+    color: var(--ink);
+    background: #0E1620;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .stage-wrap {
+    position: fixed;
+    inset: 0;
+    background: #0E1620;
+    overflow: hidden;
+  }
+  .stage-fit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1440px;
+    height: 900px;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+  }
+  .stage {
+    width: 1440px;
+    height: 900px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* modular grid bg */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(to right, var(--rule) 1px, transparent 1px);
+    background-size: calc((1440px - 96px) / 12) 100%;
+    background-position: 48px 0;
+    opacity: 0.5;
+    z-index: 1;
+  }
+
+  /* ---------- topbar (same as Hero) ---------- */
+  .topbar {
+    position: absolute;
+    top: 28px;
+    left: 0; right: 0;
+    z-index: 10;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 640px 1fr;
+    align-items: center;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px 8px 8px;
+    background: #fff;
+    border: 1px solid var(--rule-2);
+    color: var(--ink);
+    line-height: 1.05;
+    border-radius: var(--radius);
+  }
+  .logo-mark { width: 36px; height: 36px; object-fit: contain; display: block; }
+  .logo-text {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: 'Onest', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .logo .sub {
+    display: block;
+    font-weight: 500;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .top-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .nav { display: flex; gap: 28px; align-items: center; }
+  .nav a {
+    color: var(--ink-2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    padding: 4px 0;
+  }
+  .nav a.active { color: var(--blue-deep); }
+  .nav a.active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -4px;
+    height: 2px; background: var(--blue-deep);
+  }
+  .nav a:hover { color: var(--blue-deep); }
+  .top-actions { display: flex; gap: 12px; align-items: center; }
+  .lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-2);
+    padding: 8px 10px;
+    border: 1px solid var(--rule-2);
+    background: #fff;
+    border-radius: var(--radius-sm);
+  }
+  .lang .active { color: var(--blue-deep); font-weight: 600; }
+  .lang span:not(.active) { color: var(--muted); }
+  .btn-cta {
+    background: var(--blue-deep);
+    color: #fff;
+    border: none;
+    padding: 11px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: var(--radius-sm);
+  }
+  .btn-cta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #B6D4E6;
+    box-shadow: 0 0 0 3px rgba(182, 212, 230, 0.18);
+  }
+
+  /* ---------- section layout ---------- */
+  .section {
+    position: absolute;
+    top: 120px;
+    left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    padding: 0 48px 48px 48px;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 48px;
+  }
+
+  /* ---------- LEFT: title column ---------- */
+  .cases-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 12px;
+  }
+
+  .marker-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .marker-row .brace { color: var(--blue-mid); }
+  .marker-row .num { color: var(--ink-2); font-weight: 600; }
+  .marker-row .sep {
+    flex: 1; max-width: 80px;
+    height: 1px; background: var(--rule);
+  }
+
+  .h2 {
+    font-family: 'Onest', sans-serif;
+    font-weight: 800;
+    font-size: 76px;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .h2 .accent {
+    color: var(--blue-deep);
+    position: relative;
+    display: inline-block;
+  }
+  .h2 .accent::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 8px;
+    height: 8px;
+    background: var(--bg-blue-2);
+    z-index: -1;
+  }
+
+  .lede {
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 420px;
+    margin: 0;
+  }
+  .lede .quote {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--blue-mid);
+    margin-right: 6px;
+  }
+  .lede .hl-mark {
+    background: linear-gradient(180deg, transparent 65%, var(--bg-blue-2) 65%);
+    padding: 0 2px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .all-projects {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 22px 16px 28px;
+    background: var(--blue-deep);
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 999px;
+    align-self: flex-start;
+    transition: background 0.2s;
+    box-shadow: 0 16px 32px -16px rgba(15,50,75,0.55);
+  }
+  .all-projects:hover { background: var(--blue-deep-2); }
+  .all-projects .arrow {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.16);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .all-projects .arrow svg { width: 14px; height: 14px; }
+
+  .summary-strip {
+    margin-top: 8px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+  }
+  .stat-mini {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .stat-mini:last-child { border-bottom: none; }
+  .stat-mini .num {
+    font-family: 'Onest', sans-serif;
+    font-weight: 800;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .stat-mini .num .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-left: 0;
+    letter-spacing: 0.04em;
+  }
+  .stat-mini .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.35;
+    text-align: right;
+  }
+
+  /* ---------- RIGHT: cases row ---------- */
+  .cases-row {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+  .cases-track {
+    display: flex;
+    gap: 14px;
+    height: 100%;
+    align-items: stretch;
+  }
+
+  .case-card {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .case-card:nth-child(odd)  { margin-top: 0; }
+  .case-card:nth-child(even) { margin-top: 32px; }
+
+  .case-card .case-image {
+    position: relative;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-blue-1);
+    border: 1px solid var(--rule-2);
+  }
+  .case-card .case-image image-slot {
+    width: 100%;
+    height: 100%;
+    display: block;
+    filter: grayscale(0.25) contrast(1.05) brightness(0.96);
+  }
+  .case-card .case-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(31,90,122,0.1) 0%, rgba(31,90,122,0.0) 30%, rgba(31,90,122,0.55) 100%);
+  }
+
+  .case-num {
+    position: absolute;
+    top: 14px; left: 14px;
+    z-index: 4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #EAF2F8;
+    background: rgba(14, 22, 32, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 6px 9px;
+    border-radius: 6px;
+    line-height: 1;
+  }
+
+  .case-info {
+    padding: 16px 0 4px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .case-info .title {
+    font-family: 'Onest', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .case-info .area {
+    font-family: 'Onest', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--blue-deep);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .case-info .area .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-left: 2px;
+  }
+  .case-info .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .case-info .meta strong {
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+
+  /* feature badge on image */
+  .case-badge {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 4;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+  .case-badge .dot {
+    display: inline-block;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #B6D4E6;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .case-card.featured {
+    flex: 1.15 1 0;
+  }
+  .case-card.featured .case-image {
+    background: var(--blue-deep);
+  }
+  .case-watermark {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgba(255,255,255,0.20);
+    font-family: 'Onest', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
+    padding: 0 12px;
+    pointer-events: none;
+  }
+
+  /* peek arrow / scroll hint */
+  .scroll-hint {
+    position: absolute;
+    right: 48px;
+    top: 84px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    z-index: 5;
+  }
+  .scroll-hint .line { width: 28px; height: 1px; background: var(--rule-2); }
+  .scroll-hint .arrow {
+    width: 28px; height: 28px;
+    border: 1px solid var(--rule-2);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue-deep);
+  }
+
+  /* decorative quotes/braces */
+  .corner-brace {
+    position: absolute;
+    color: var(--blue-mid);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    z-index: 3;
+    user-select: none;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="stage-wrap">
+ <div class="stage-fit" id="stageFit">
+  <div class="stage" data-screen-label="02 Cases">
+
+    <div class="grid-bg"></div>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="logo" style="width: 240px">
+        <img src="assets/logo.png" class="logo-mark" alt="" />
+        <span class="logo-text">
+          ВентФасад Проект
+          <span class="sub">Бюро НВФ и СПК</span>
+        </span>
+      </div>
+
+      <div class="top-right">
+        <nav class="nav">
+          <a href="#cases" class="active">Кейсы</a>
+          <a href="#approach">Подход</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contacts">Контакты</a>
+        </nav>
+
+        <div class="top-actions">
+          <div class="lang"><span class="active">RU</span> <span style="opacity:0.4">/</span> <span>EN</span></div>
+          <button class="btn-cta">
+            <span class="dot"></span>
+            Оставить заявку
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- decorative braces -->
+    <span class="corner-brace" style="left:48px; top:130px;">{</span>
+    <span class="corner-brace" style="right:48px; bottom:30px;">}</span>
+
+    <!-- SECTION -->
+    <div class="section">
+
+      <!-- LEFT title column -->
+      <aside class="cases-left">
+        <div class="marker-row">
+          <span class="brace">{</span>
+          <span class="num">02</span>
+          <span class="brace">}</span>
+          <span style="margin-left:4px">Реализованные объекты</span>
+          <span class="sep"></span>
+        </div>
+
+        <h2 class="h2">
+          Наши<br/>
+          <span class="accent">объекты</span>
+        </h2>
+
+        <p class="lede">
+          <span class="quote">\\</span>
+          Сдаём <span class="hl-mark">рабочую документацию строго под график монтажа</span>. Работаем с системными застройщиками и крупными девелоперами.
+        </p>
+
+        <a class="all-projects" href="#projects">
+          Все проекты
+          <span class="arrow">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          </span>
+        </a>
+
+        <div class="summary-strip">
+          <div class="stat-mini">
+            <div class="num">98&nbsp;122<span class="unit">м²</span></div>
+            <div class="lbl">Показано<br/>в подборке</div>
+          </div>
+          <div class="stat-mini">
+            <div class="num">50<span class="unit">+</span></div>
+            <div class="lbl">Проектов<br/>в портфолио</div>
+          </div>
+          <div class="stat-mini">
+            <div class="num">100<span class="unit">%</span></div>
+            <div class="lbl">Сдано<br/>в срок</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT cases row -->
+      <div class="cases-row">
+
+        <div class="scroll-hint">
+          <span>Свайп →</span>
+          <span class="line"></span>
+          <span class="arrow">
+            <svg viewBox="0 0 14 14" width="12" height="12" fill="none">
+              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+            </svg>
+          </span>
+        </div>
+
+        <div class="cases-track">
+
+          <!-- Card 1: Тропарево -->
+          <article class="case-card">
+            <div class="case-image">
+              <image-slot id="case-troparevo" shape="rect"
+                placeholder="ЖК «Тропарево» · фасад"></image-slot>
+              <span class="case-num">{ 01 }</span>
+            </div>
+            <div class="case-info">
+              <div class="title">ЖК «Тропарево»</div>
+              <div class="area">35 258<span class="unit">м²</span></div>
+            </div>
+          </article>
+
+          <!-- Card 2: Верейская -->
+          <article class="case-card">
+            <div class="case-image">
+              <image-slot id="case-vereyskaya" shape="rect"
+                placeholder="ЖК «Верейская» · фасад"></image-slot>
+              <span class="case-num">{ 02 }</span>
+            </div>
+            <div class="case-info">
+              <div class="title">ЖК «Верейская»</div>
+              <div class="area">27 871<span class="unit">м²</span></div>
+            </div>
+          </article>
+
+          <!-- Card 3: Прокшино -->
+          <article class="case-card">
+            <div class="case-image">
+              <image-slot id="case-prokshino" shape="rect"
+                placeholder="ЖК «Прокшино» · фасад"></image-slot>
+              <span class="case-num">{ 03 }</span>
+            </div>
+            <div class="case-info">
+              <div class="title">ЖК «Прокшино»</div>
+              <div class="area">19 722<span class="unit">м²</span></div>
+            </div>
+          </article>
+
+          <!-- Card 4: Дудкино -->
+          <article class="case-card">
+            <div class="case-image">
+              <image-slot id="case-dudkino" shape="rect"
+                placeholder="ЖК «Дудкино» · фасад"></image-slot>
+              <span class="case-num">{ 04 }</span>
+            </div>
+            <div class="case-info">
+              <div class="title">ЖК «Дудкино»</div>
+              <div class="area">15 271<span class="unit">м²</span></div>
+            </div>
+          </article>
+
+          <!-- Card 5: СберСити (featured) -->
+          <article class="case-card featured">
+            <div class="case-image">
+              <image-slot id="case-sbercity" shape="rect"
+                placeholder="«СберСити» · фасад"></image-slot>
+              <span class="case-num">{ 05 }</span>
+            </div>
+            <div class="case-info">
+              <div class="title">«СберСити»</div>
+              <div class="area">17 394<span class="unit">м²</span></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+ </div>
+</div>
+
+<script>
+  function fit() {
+    const fit = document.getElementById('stageFit');
+    const aw = window.innerWidth;
+    const ah = window.innerHeight;
+    const scale = Math.min(aw / 1440, ah / 900);
+    fit.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+</script>
+</body>
+</html>
