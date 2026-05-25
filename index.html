@@ -89,6 +89,54 @@ section {
   display: none;
 }
 
+/* Burger button */
+.burger {
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  width: 38px; height: 38px;
+  border: 1px solid var(--rule-2); border-radius: var(--rs);
+  background: #fff; cursor: pointer; gap: 5px; flex: 0 0 auto;
+  transition: background .15s;
+}
+.burger:hover { background: var(--bg-soft); }
+.burger span {
+  display: block; width: 18px; height: 2px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform .25s, opacity .25s;
+}
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Drawer overlay */
+.nav-drawer {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 199;
+  flex-direction: column;
+}
+.nav-drawer-backdrop {
+  flex: 1;
+  background: rgba(15, 38, 58, .45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.nav-drawer-panel {
+  background: #fff;
+  padding: 80px 24px 32px;
+  display: flex; flex-direction: column; gap: 6px;
+  border-radius: 0 0 var(--r) var(--r);
+}
+.nav-drawer-panel a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-radius: var(--rs);
+  text-decoration: none; font-size: 16px; font-weight: 600; color: var(--ink);
+  transition: background .15s, color .15s;
+}
+.nav-drawer-panel a:hover { background: var(--bg-soft); color: var(--blue); }
+.nav-drawer-panel a .arr { opacity: .35; font-size: 14px; }
+.nav-drawer-divider { height: 1px; background: var(--rule); margin: 4px 0; }
+.nav-drawer.open { display: flex; }
+
 /* ============================
    TOPBAR (per-section, desktop)
 ============================ */
@@ -597,15 +645,16 @@ section {
   .mobile-nav {
     display: flex;
     position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    padding: 11px 20px;
+    padding: 10px 16px;
     background: rgba(255,255,255,.97);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--rule);
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
   }
+  .burger { display: flex; }
 
   /* Hide per-section topbars on mobile */
   .topbar { display: none; }
@@ -702,13 +751,30 @@ section {
 <div class="site">
 
 <!-- ═══ MOBILE FIXED NAV ═══ -->
-<nav class="mobile-nav">
+<nav class="mobile-nav" id="mobileNav">
+  <button class="burger" id="burgerBtn" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
   <a class="logo" href="#hero">
     <img src="assets/logo.png" class="logo-mark" alt="" />
     <span class="logo-text">ВентФасад Проект<span class="logo-sub">Бюро НВФ и СПК</span></span>
   </a>
-  <button class="btn-cta"><span class="dot"></span>Заявка</button>
+  <button class="btn-cta"><span class="dot"></span>Оставить заявку</button>
 </nav>
+
+<!-- ═══ NAV DRAWER ═══ -->
+<div class="nav-drawer" id="navDrawer">
+  <div class="nav-drawer-panel">
+    <a href="#hero" class="drawer-link">Главная <span class="arr">→</span></a>
+    <a href="#cases" class="drawer-link">Кейсы <span class="arr">→</span></a>
+    <a href="#approach" class="drawer-link">Подход <span class="arr">→</span></a>
+    <a href="#audit" class="drawer-link">Аудит <span class="arr">→</span></a>
+    <a href="#faq" class="drawer-link">FAQ <span class="arr">→</span></a>
+    <div class="nav-drawer-divider"></div>
+    <a href="#contacts" class="drawer-link">Контакты <span class="arr">→</span></a>
+  </div>
+  <div class="nav-drawer-backdrop" id="drawerBackdrop"></div>
+</div>
 
 <!-- ══════════════════════════════════════════════
      ① HERO
@@ -1432,6 +1498,32 @@ section {
       document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
       if (!isOpen) item.classList.add('open');
     });
+  });
+
+  // ── Mobile burger / nav drawer ──
+  const burgerBtn     = document.getElementById('burgerBtn');
+  const navDrawer     = document.getElementById('navDrawer');
+  const drawerBackdrop = document.getElementById('drawerBackdrop');
+
+  function openDrawer() {
+    navDrawer.classList.add('open');
+    burgerBtn.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    navDrawer.classList.remove('open');
+    burgerBtn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  burgerBtn.addEventListener('click', () => {
+    navDrawer.classList.contains('open') ? closeDrawer() : openDrawer();
+  });
+  drawerBackdrop.addEventListener('click', closeDrawer);
+
+  // Close drawer when any drawer link is clicked
+  document.querySelectorAll('.drawer-link').forEach(link => {
+    link.addEventListener('click', closeDrawer);
   });
 </script>
 </body>
