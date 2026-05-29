@@ -1629,12 +1629,8 @@ section {
       submitBtn.innerHTML = '<span style="opacity:.6">Отправляем…</span>';
 
       try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ area, mat, contact })
-        });
+        const params = new URLSearchParams({ area, mat, contact });
+        await fetch(SCRIPT_URL + '?' + params.toString(), { mode: 'no-cors' });
 
         // Успех
         submitBtn.innerHTML = '✓ Заявка отправлена — свяжемся в течение 18 мин';
