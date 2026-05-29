@@ -483,6 +483,30 @@ section {
   display: flex; flex-direction: column; gap: clamp(14px,1.8vw,20px); overflow: hidden;
 }
 .form-card::before { content: ''; position: absolute; top: -150px; right: -150px; width: 360px; height: 360px; border: 1px solid rgba(255,255,255,.07); border-radius: 50%; pointer-events: none; }
+.form-success {
+  display: none;
+  position: absolute; inset: 0; z-index: 10;
+  background: var(--blue);
+  border-radius: var(--r);
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; text-align: center;
+  padding: 40px 32px;
+}
+.form-success.show { display: flex; }
+.form-success .fs-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+.form-success .fs-title {
+  font-weight: 800; font-size: clamp(20px,2.5vw,32px);
+  line-height: 1.1; letter-spacing: -.015em; color: #fff;
+}
+.form-success .fs-sub {
+  font-size: clamp(14px,1.4vw,17px); color: rgba(255,255,255,.75);
+  line-height: 1.5; max-width: 320px;
+}
 .form-card::after  { content: ''; position: absolute; top: -90px;  right: -90px;  width: 250px; height: 250px; border: 1px solid rgba(255,255,255,.1);  border-radius: 50%; pointer-events: none; }
 .form-hrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; position: relative; z-index: 2; }
 .fpill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; color: var(--blue-lt); font-family: 'JetBrains Mono',monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
@@ -1283,6 +1307,14 @@ section {
     </div>
 
     <div class="form-card" id="form">
+
+      <!-- Экран успеха -->
+      <div class="form-success" id="formSuccess">
+        <div class="fs-icon">✓</div>
+        <div class="fs-title">Заявка отправлена!</div>
+        <div class="fs-sub">Свяжемся с вами в течение 24 часов и подберём три варианта решения для вашего объекта.</div>
+      </div>
+
       <div class="form-hrow">
         <span class="fpill"><span class="fdot"></span>Готовы принять</span>
       </div>
@@ -1641,11 +1673,6 @@ section {
         const params = new URLSearchParams({ area, mat, name, phone, tg });
         await fetch(SCRIPT_URL + '?' + params.toString(), { mode: 'no-cors' });
 
-        // Успех
-        submitBtn.innerHTML = '✓ Заявка отправлена — свяжемся в течение 18 мин';
-        submitBtn.style.background = '#d4edda';
-        submitBtn.style.color = '#1a6b2f';
-
         // Очистить поля
         document.getElementById('f-area').value = '';
         document.getElementById('f-mat').selectedIndex = 0;
@@ -1653,13 +1680,15 @@ section {
         document.getElementById('f-phone').value = '';
         document.getElementById('f-tg').value = '';
 
-        // Вернуть кнопку через 5 сек
+        // Показать оверлей успеха на всю форму
+        document.getElementById('formSuccess').classList.add('show');
+
+        // Убрать оверлей через 6 сек
         setTimeout(() => {
+          document.getElementById('formSuccess').classList.remove('show');
           submitBtn.innerHTML = origHTML;
-          submitBtn.style.background = '';
-          submitBtn.style.color = '';
           submitBtn.disabled = false;
-        }, 5000);
+        }, 6000);
 
       } catch (err) {
         submitBtn.innerHTML = origHTML;
