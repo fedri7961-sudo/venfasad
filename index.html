@@ -73,16 +73,7 @@ section {
 /* ============================
    MODULAR GRID BACKGROUND
 ============================ */
-.grid-bg {
-  position: absolute; inset: 0; pointer-events: none; z-index: 0;
-  background-image: linear-gradient(to right, var(--rule) 1px, transparent 1px);
-  background-size: calc(100% / 12) 100%;
-  opacity: .5;
-}
-#contacts .grid-bg {
-  background-image: linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px);
-  opacity: 1;
-}
+.grid-bg { display: none; }
 
 /* ============================
    MOBILE-ONLY FIXED NAV
