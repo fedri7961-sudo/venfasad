@@ -1285,7 +1285,6 @@ section {
     <div class="form-card" id="form">
       <div class="form-hrow">
         <span class="fpill"><span class="fdot"></span>Готовы принять</span>
-        <span class="ftime">Среднее время<br/><strong style="color:#fff;font-size:13px;letter-spacing:0">отклика: 18 мин</strong></span>
       </div>
       <h3 class="form-title">Получить КП за&nbsp;24&nbsp;часа</h3>
       <p class="form-sub">Заполните 3 поля — вернёмся с тремя вариантами решения и обзвоном по узким местам.</p>
@@ -1309,8 +1308,16 @@ section {
           </select>
         </div>
         <div class="ffield full">
-          <label for="f-contact">Имя · телефон или e-mail</label>
-          <input id="f-contact" type="text" placeholder="Иван Петров · +7 921 ___ __ __" />
+          <label for="f-name">Имя</label>
+          <input id="f-name" type="text" placeholder="Иван Петров" autocomplete="given-name" />
+        </div>
+        <div class="ffield full">
+          <label for="f-phone">Номер телефона</label>
+          <input id="f-phone" type="tel" placeholder="+7 921 ___ __ __" autocomplete="tel" />
+        </div>
+        <div class="ffield full">
+          <label for="f-tg">Ник в Телеграм</label>
+          <input id="f-tg" type="text" placeholder="@username" />
         </div>
       </div>
       <div class="form-submit">
@@ -1613,13 +1620,15 @@ section {
   const submitBtn = document.querySelector('.submit-btn');
   if (submitBtn) {
     submitBtn.addEventListener('click', async () => {
-      const area    = document.getElementById('f-area').value.trim();
-      const mat     = document.getElementById('f-mat').value;
-      const contact = document.getElementById('f-contact').value.trim();
+      const area  = document.getElementById('f-area').value.trim();
+      const mat   = document.getElementById('f-mat').value;
+      const name  = document.getElementById('f-name').value.trim();
+      const phone = document.getElementById('f-phone').value.trim();
+      const tg    = document.getElementById('f-tg').value.trim();
 
-      // Простая валидация
-      if (!contact) {
-        document.getElementById('f-contact').focus();
+      // Простая валидация — хотя бы телефон или телеграм
+      if (!phone && !tg) {
+        document.getElementById('f-phone').focus();
         return;
       }
 
@@ -1629,7 +1638,7 @@ section {
       submitBtn.innerHTML = '<span style="opacity:.6">Отправляем…</span>';
 
       try {
-        const params = new URLSearchParams({ area, mat, contact });
+        const params = new URLSearchParams({ area, mat, name, phone, tg });
         await fetch(SCRIPT_URL + '?' + params.toString(), { mode: 'no-cors' });
 
         // Успех
@@ -1639,8 +1648,10 @@ section {
 
         // Очистить поля
         document.getElementById('f-area').value = '';
-        document.getElementById('f-contact').value = '';
         document.getElementById('f-mat').selectedIndex = 0;
+        document.getElementById('f-name').value = '';
+        document.getElementById('f-phone').value = '';
+        document.getElementById('f-tg').value = '';
 
         // Вернуть кнопку через 5 сек
         setTimeout(() => {

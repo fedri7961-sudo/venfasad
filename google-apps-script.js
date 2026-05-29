@@ -3,23 +3,20 @@
 //  Вставить в: script.google.com → Новый проект → Code.gs
 // ============================================================
 
-const SHEET_NAME = 'Заявки';  // название листа в таблице
+const SHEET_NAME = 'Заявки';
 
-function doPost(e) {
+function doGet(e) {
   try {
-    const data = JSON.parse(e.postData.contents);
+    const p = e.parameter;
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME);
 
-    // Создать лист и шапку если нет
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(['Дата', 'Площадь (м²)', 'Тип облицовки', 'Контакт', 'Источник']);
+      sheet.appendRow(['Дата', 'Имя', 'Телефон', 'Телеграм', 'Площадь (м²)', 'Тип облицовки', 'Источник']);
       sheet.setFrozenRows(1);
-
-      // Форматирование шапки
-      const header = sheet.getRange(1, 1, 1, 5);
+      const header = sheet.getRange(1, 1, 1, 7);
       header.setFontWeight('bold');
       header.setBackground('#2E6A8F');
       header.setFontColor('#ffffff');
@@ -27,9 +24,11 @@ function doPost(e) {
 
     sheet.appendRow([
       new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }),
-      data.area    || '—',
-      data.mat     || '—',
-      data.contact || '—',
+      p.name  || '—',
+      p.phone || '—',
+      p.tg    || '—',
+      p.area  || '—',
+      p.mat   || '—',
       'Сайт'
     ]);
 
